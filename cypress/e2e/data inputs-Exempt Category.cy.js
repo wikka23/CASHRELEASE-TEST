@@ -2,8 +2,9 @@
 describe('Data inputs -Exempt category', () => {
     
     let category = faker.finance.transactionDescription()
-    let categoryId = faker.string.numeric(6)
+    let categoryId = faker.string.numeric(17)
     let editCategory = category+' edit'
+    
   
     before(() => {
         cy.login()
@@ -19,17 +20,21 @@ describe('Data inputs -Exempt category', () => {
         cy.get('.form-select').select(3)
         cy.xpath("//div[contains(@class, 'modal-footer')]//button[contains(text(), 'Exempt')]").click()
         cy.contains('saving data',{matchCase : false}).should('exist')
-      
-
-    })  
+        
+    })  });  
 
    it('Search for Exempt category', () => {
-        cy.xpath("//tr/td[text()='"+category+"']").should('be.visible')
+    cy.xpath('//input[@id="search"]').type(categoryId);
+    cy.xpath('//input[@id="search"]').type('{enter}'); 
+    //.get('#search').type(categoryId);
+    cy.wait(500);
+    cy.get('.form-select').contains('td', 'Category name') .should('exist');  
+    cy.xpath("//tr/td[text()='"+category+"']").should('be.visible')
         
     })
-})
- /* 
-  it('Edit added department', () => {
+
+ 
+  /*it('Edit added department', () => {
         cy.get('#search').type(department)
         cy.xpath("//tr/td[text()='"+department+"']").should('be.visible')
         cy.xpath("//tr/td[text()='"+department+"']//following-sibling::td/div/button[1]").click()
@@ -48,4 +53,4 @@ describe('Data inputs -Exempt category', () => {
         cy.clickButton('Delete')
         cy.contains('Deleting data',{matchCase : false}).should('exist')
     })
-}) */
+*/
